@@ -1,0 +1,19 @@
+# Fohow Eden Life Robots.txt
+# Authorized TCM Wholesale Portal Kenya
+
+User-agent: *
+Allow: /
+Allow: /shop
+Allow: /philosophy
+Allow: /blog
+Allow: /clinical-map
+Allow: /consultations
+
+# Block sensitive administrative and internal paths
+Disallow: /admin
+Disallow: /login
+Disallow: /checkout
+Disallow: /api/
+
+# Sitemap (Add your production domain here when ready)
+Sitemap: https://fohowedenlife.co.ke/sitemap.xml

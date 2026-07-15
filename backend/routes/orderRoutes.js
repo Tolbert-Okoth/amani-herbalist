@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const orderController = require('../controllers/orderController');
+const { processCheckout } = require('../controllers/mpesaController');
+const mpesaAuth = require('../middleware/mpesaAuth');
+const { adminAuth } = require('../middleware/adminAuth');
 
-// For now, if you haven't built the mpesa logic fully, 
-// let's just put a dummy route so the server doesn't crash.
-router.get('/test', (req, res) => {
-    res.json({ message: "Order routes are working!" });
-});
+// 1. Admin Management Routes (Require JWT verification)
+router.get('/', adminAuth, orderController.getAllOrders);
+router.get('/stats', adminAuth, orderController.getDashboardStats);
+router.get('/:id', adminAuth, orderController.getOrderById);
+router.put('/:id/status', adminAuth, orderController.updateOrderStatus);
+router.delete('/:id', adminAuth, orderController.deleteOrder);
 
-// THIS IS THE CRITICAL LINE:
+// 2. Checkout Route (Handles order creation + M-Pesa STK Push)
+router.post('/checkout', mpesaAuth, processCheckout);
+
 module.exports = router;

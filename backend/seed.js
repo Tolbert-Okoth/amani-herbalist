@@ -1,87 +1,104 @@
-// backend/seed.js
 const { Pool } = require('pg');
+const xlsx = require('xlsx');
 require('dotenv').config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-const seedDatabase = async () => {
+async function seedDatabase() {
+  console.log('Reading Excel file...');
+
   try {
-    console.log("🌱 Seeding Amani Herbalists Database...");
+    const workbook = xlsx.readFile('products.xlsx');
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const rawData = xlsx.utils.sheet_to_json(sheet, { range: 1 });
 
-    // 1. Force drop old tables to ensure we get the updated schema
-    await pool.query(`
-      DROP TABLE IF EXISTS order_items CASCADE;
-      DROP TABLE IF EXISTS orders CASCADE;
-      DROP TABLE IF EXISTS products CASCADE;
-      DROP TABLE IF EXISTS categories CASCADE;
-    `);
+    const client = await pool.connect();
     
-    console.log("🧹 Cleared old database schema...");
+    try {
+      await client.query('BEGIN'); 
+      console.log('Syncing categories with PostgreSQL...');
 
-    // 2. Create Tables with the correct columns
-    await pool.query(`
-      CREATE TABLE categories (
-          id SERIAL PRIMARY KEY,
-          name VARCHAR(100) NOT NULL,
-          tcm_function VARCHAR(100),
-          description TEXT,
-          image_url TEXT
-      );
+      // 1. CREATE DYNAMIC CATEGORY MAP
+      const actualCategoryMap = {};
+      const uniqueCategories = [...new Set(rawData.map(row => row['TCM Category']).filter(Boolean))];
 
-      CREATE TABLE products (
-          id SERIAL PRIMARY KEY,
-          category_id INT REFERENCES categories(id) ON DELETE SET NULL,
-          name VARCHAR(255) NOT NULL,
-          slug VARCHAR(255) UNIQUE NOT NULL,
-          description TEXT NOT NULL,
-          benefits TEXT,
-          usage_instructions TEXT,
-          ingredients TEXT,
-          price_kes DECIMAL(10, 2) NOT NULL,
-          stock_quantity INT DEFAULT 0,
-          is_featured BOOLEAN DEFAULT false,
-          image_url TEXT,
-          tcm_function_tag VARCHAR(100),
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+      for (const catName of uniqueCategories) {
+        let catRes = await client.query('SELECT id FROM categories WHERE name = $1', [catName]);
+        
+        if (catRes.rows.length === 0) {
+          console.log(`Creating new category: ${catName}`);
+          catRes = await client.query(
+            'INSERT INTO categories (name) VALUES ($1) RETURNING id', 
+            [catName]
+          );
+        }
+        actualCategoryMap[catName] = catRes.rows[0].id;
+      }
 
-    // 3. Insert Categories
-    const catRes = await pool.query(`
-      INSERT INTO categories (name, tcm_function) 
-      VALUES 
-      ('Herbal Supplements', 'Nourish'),
-      ('Wellness Devices', 'Regulate'),
-      ('Skincare', 'Detox')
-      RETURNING id, name;
-    `);
+      // 2. WIPE OLD DATA TO PREVENT DUPLICATES
+      console.log('Categories synced! Wiping old products to load fresh data...');
+      await client.query('TRUNCATE TABLE products RESTART IDENTITY CASCADE');
 
-    const categories = catRes.rows;
-    console.log("✅ Categories built!");
+      let insertedCount = 0;
 
-    // 4. Insert Products
-    await pool.query(`
-      INSERT INTO products (category_id, name, slug, description, price_kes, stock_quantity, tcm_function_tag, image_url) 
-      VALUES 
-      ($1, 'Cordyceps Oral Liquid', 'cordyceps-liquid', 'A premium liquid extract designed to boost lung capacity, enhance stamina, and nourish the kidneys. Perfect for combating fatigue.', 6500.00, 50, 'Nourish', 'https://images.unsplash.com/photo-1608681284705-72863e414c2c?w=500&q=80'),
-      
-      ($2, 'Thermal Meridian Massage Belt', 'thermal-belt', 'Utilizes far-infrared technology to warm the meridians, ease lower back tension, and regulate Qi flow through the abdominal region.', 12500.00, 15, 'Regulate', 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=80'),
-      
-      ($1, 'Reishi Mushroom Capsules', 'reishi-capsules', 'Known as the mushroom of immortality. Calms the spirit, improves sleep quality, and provides powerful immune system support.', 4200.00, 100, 'Balance', 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&q=80'),
-      
-      ($3, 'Aloe & Ginseng Detox Soap', 'ginseng-soap', 'A purifying bar that clears heat and toxins from the skin while leaving it deeply moisturized. Great for sensitive skin profiles.', 1200.00, 200, 'Detox', 'https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=500&q=80')
-    `, [categories[0].id, categories[1].id, categories[2].id]);
+      // 3. INSERT PRODUCTS WITH ALL NEW COLUMNS
+      for (const row of rawData) {
+        if (!row['Product Name']) continue;
 
-    console.log("✅ Products stocked!");
-    console.log("🎉 Database seeding complete!");
+        const rawPrice = String(row['Price (KES)']);
+        const cleanPrice = parseInt(rawPrice.replace(/,/g, ''), 10);
+        
+        const descriptionText = row['Brief Product Info'] || 'No description provided.';
+        const slug = row['Product Name'].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
+        // Grab the new columns from the Excel file
+        const fullDescription = row['Full Description'] || descriptionText;
+        const ingredientsList = row['Ingredients List'] || '';
+        const stockQuantity = parseInt(row['Initial Stock Quantity'], 10) || 0;
+
+        const rawCategory = row['TCM Category'];
+        const realCategoryId = actualCategoryMap[rawCategory]; 
+
+        const queryText = `
+          INSERT INTO products (
+            name, slug, price_kes, category_id, description, tcm_function_tag, 
+            full_description, ingredients_list, stock_quantity
+          )
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        `;
+        const queryValues = [
+          row['Product Name'], 
+          slug, 
+          cleanPrice, 
+          realCategoryId, 
+          descriptionText, 
+          rawCategory,
+          fullDescription,
+          ingredientsList,
+          stockQuantity
+        ];
+        
+        await client.query(queryText, queryValues);
+        insertedCount++;
+      }
+
+      await client.query('COMMIT'); 
+      console.log(`✅ SUCCESS! ${insertedCount} products completely re-seeded with Full Descriptions and Inventory!`);
+    } catch (dbError) {
+      await client.query('ROLLBACK'); 
+      console.error('❌ Error inserting into database:', dbError);
+    } finally {
+      client.release();
+    }
 
   } catch (error) {
-    console.error("❌ Error seeding database:", error);
+    console.error('❌ Error reading the Excel file:', error.message);
   } finally {
     pool.end();
   }
-};
+}
 
 seedDatabase();

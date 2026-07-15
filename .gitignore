@@ -253,3 +253,5 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+# Uploaded files
+backend/uploads/

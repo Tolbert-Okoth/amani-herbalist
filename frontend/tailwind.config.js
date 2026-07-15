@@ -2,10 +2,26 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        marquee: {
+          '0%':   { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        slideIn: {
+          '0%':   { opacity: 0, transform: 'translateX(20px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 25s linear infinite',
+        slideIn: 'slideIn 0.4s ease forwards',
+      },
+    },
   },
   plugins: [],
 }
+
