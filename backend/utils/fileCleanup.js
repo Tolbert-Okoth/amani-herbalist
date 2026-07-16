@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const cloudinary = require('../config/cloudinary');
+const { cloudinary } = require('../config/cloudinary');
 
 /**
  * Safely deletes an uploaded file from disk OR Cloudinary to prevent file orphan accumulation.
