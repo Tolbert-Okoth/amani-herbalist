@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const axios = require('axios');
+const { sendOrderPendingEmail, sendOrderConfirmationEmail } = require('../utils/emailService');
 
 
 // 🔵 Rigorous Phone Number Formatter for Safaricom 254... 🔵
