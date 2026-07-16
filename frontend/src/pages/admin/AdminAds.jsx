@@ -87,7 +87,7 @@ const AdminAds = () => {
         setIsModalOpen(false);
         fetchAds();
       } else {
-        showToast('Failed to upload ad', 'error');
+        showToast(response.data?.error || response.data?.message || response.raw?.error || 'Failed to upload ad', 'error');
       }
     } catch (err) {
       console.error(err);

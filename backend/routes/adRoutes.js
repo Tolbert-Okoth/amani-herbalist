@@ -15,7 +15,15 @@ const upload = multer({
 router.get('/', adController.getAllAds);
 
 // --- Admin (Protected) Routes ---
-router.post('/', adminAuth, upload.single('flyer'), adController.createAd);
+router.post('/', adminAuth, (req, res, next) => {
+  upload.single('flyer')(req, res, (err) => {
+    if (err) {
+      console.error('[Ad Flyer Upload Error]', err);
+      return res.status(400).json({ success: false, error: err.message || 'File upload failed' });
+    }
+    next();
+  });
+}, adController.createAd);
 router.put('/:id/status', adminAuth, adController.updateAdStatus);
 router.delete('/:id', adminAuth, adController.deleteAd);
 

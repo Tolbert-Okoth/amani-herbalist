@@ -19,8 +19,25 @@ router.post('/:id/rsvp', eventController.createRSVP);
 // --- Admin (Protected) Routes ---
 // The original code used `requireBoss`, I will keep it if it was there, or just `adminAuth` as requested. 
 // "Protect the POST/PUT/DELETE routes with our adminAuth middleware."
-router.post('/', adminAuth, upload.single('flyer'), eventController.createEvent);
-router.put('/:id', adminAuth, upload.single('flyer'), eventController.updateEvent);
+router.post('/', adminAuth, (req, res, next) => {
+  upload.single('flyer')(req, res, (err) => {
+    if (err) {
+      console.error('[Event Flyer Upload Error]', err);
+      return res.status(400).json({ success: false, error: err.message || 'File upload failed' });
+    }
+    next();
+  });
+}, eventController.createEvent);
+
+router.put('/:id', adminAuth, (req, res, next) => {
+  upload.single('flyer')(req, res, (err) => {
+    if (err) {
+      console.error('[Event Flyer Update Error]', err);
+      return res.status(400).json({ success: false, error: err.message || 'File upload failed' });
+    }
+    next();
+  });
+}, eventController.updateEvent);
 router.delete('/:id', adminAuth, eventController.deleteEvent);
 
 router.get('/:id/rsvps', adminAuth, eventController.getEventRSVPs);
