@@ -16,6 +16,7 @@ const BODY_ZONES = [
       { name: 'Fohow linchzhi (ganoderma)', role: 'Calms the Shen & boosts immunity' },
       { name: 'Renshen Multi Power', role: 'Enhances stamina & mental clarity' }
     ],
+    catalog_keywords: ['linchzhi', 'renshen'],
     theme: 'text-[#d2a356] border-[#d2a356]', // Gold
     glow: 'drop-shadow-[0_0_15px_rgba(210,163,86,0.4)]'
   },
@@ -32,6 +33,7 @@ const BODY_ZONES = [
       { name: 'Salvia extract tablets', role: 'Regulates blood flow & heart support' },
       { name: 'Garlic essential oil softgel', role: 'Boosts immunity & cardiovascular health' }
     ],
+    catalog_keywords: ['xue qing', 'salvia', 'garlic'],
     theme: 'text-[#f7f4ef] border-[#f7f4ef]', // White/Cream
     glow: 'drop-shadow-[0_0_15px_rgba(247,244,239,0.3)]'
   },
@@ -48,6 +50,7 @@ const BODY_ZONES = [
       { name: 'Fohow meigui (probiotics)', role: 'Balances gut flora & digestion' },
       { name: 'Boss Tea', role: 'Aids daily digestion & weight management' }
     ],
+    catalog_keywords: ['sanquing', 'meigui', 'boss tea'],
     theme: 'text-[#4ade80] border-[#4ade80]', // Emerald/Mint for Cleanse
     glow: 'drop-shadow-[0_0_15px_rgba(74,222,128,0.2)]'
   },
@@ -65,6 +68,7 @@ const BODY_ZONES = [
       { name: 'Movement Plus', role: 'Targeted mobility & joint pain relief' },
       { name: 'Fohow liuwei cha tea', role: 'Daily kidney & adrenal support' }
     ],
+    catalog_keywords: ['hai zao', 'sanbao', 'movement', 'liuwei'],
     theme: 'text-[#60a5fa] border-[#60a5fa]', // Blue for Water/Kidney element
     glow: 'drop-shadow-[0_0_15px_rgba(96,165,250,0.3)]'
   }
@@ -220,6 +224,7 @@ const MeridianMap = () => {
 
                     <Link 
                       to="/shop" 
+                      state={{ catalogFilters: activeZone.catalog_keywords }}
                       className="w-full flex items-center justify-center px-7 py-3.5 bg-[#d2a356] text-[#1c1a16] rounded-xl text-[0.9rem] font-bold tracking-wide transition-all hover:bg-[#e0b772] hover:drop-shadow-[0_0_15px_rgba(210,163,86,0.5)] shrink-0"
                     >
                       View in Catalog <ArrowRight size={16} className="ml-2" />

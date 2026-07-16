@@ -72,11 +72,13 @@ const Shop = () => {
 
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState(location.state?.search || '');
+  const [catalogFilters, setCatalogFilters] = useState(location.state?.catalogFilters || []);
 
   // Hydrate targeted search queries from external components like MeridianMap
   useEffect(() => {
-    if (location.state?.search) {
-      setSearchQuery(location.state.search);
+    if (location.state?.search || location.state?.catalogFilters) {
+      if (location.state.search) setSearchQuery(location.state.search);
+      if (location.state.catalogFilters) setCatalogFilters(location.state.catalogFilters);
       // Clean up state immediately so manual clears work
       window.history.replaceState({}, document.title);
     }
@@ -136,6 +138,12 @@ const Shop = () => {
   useEffect(() => {
     let result = products;
 
+    if (catalogFilters.length > 0) {
+      result = result.filter(p => 
+        catalogFilters.some(keyword => p.name.toLowerCase().includes(keyword.toLowerCase()))
+      );
+    }
+
     if (searchQuery) {
       result = result.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -161,6 +169,7 @@ const Shop = () => {
 
   const clearSearch = () => {
     setSearchQuery('');
+    setCatalogFilters([]);
     setSelectedCategory('All');
     setMaxPrice(200000);
     setSortBy('default');
