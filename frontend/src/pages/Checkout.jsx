@@ -317,7 +317,7 @@ const Checkout = () => {
       </h2>
       <p className="font-dm text-[0.95rem] font-light text-[#5a5648] max-w-[420px] leading-[1.75] animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
         {paymentConfirmed ? (
-          <>Your wholesale order is confirmed and currently being processed for <strong className="text-[#811816]">Home Delivery</strong>. A confirmation receipt will arrive via SMS and email shortly.</>
+          <>Your wholesale order is confirmed and currently being processed for <strong className="text-[#811816]">Home Delivery</strong>. A confirmation receipt will arrive via email shortly.</>
         ) : (
           <>Please check your email for payment instructions. We will contact you shortly once your payment is verified to process your order for <strong className="text-[#811816]">Home Delivery</strong>.</>
         )}
@@ -422,6 +422,10 @@ const Checkout = () => {
                     {errors.phone && <p className="text-[0.65rem] text-red-500 font-medium pl-2 animate-in fade-in slide-in-from-top-1">{errors.phone}</p>}
                   </div>
                 </div>
+
+                <p className="font-dm text-[0.75rem] text-[#811816] font-medium leading-tight mb-2 italic animate-in fade-in slide-in-from-top-2">
+                  * Please double-check your email address. All official PDF invoices, payment receipts, and delivery updates will be sent here.
+                </p>
 
                 <div className="relative">
                   <input 

@@ -1,5 +1,6 @@
 const pool = require('../config/db');
-const { sendOrderConfirmationEmail } = require('../utils/emailService');
+const { sendOrderConfirmationEmail, sendOrderStatusUpdateEmail } = require('../utils/emailService');
+
 // --- GET ALL ORDERS (Upgraded for visual dashboard) ---
 exports.getAllOrders = async (req, res) => {
   try {
@@ -56,6 +57,9 @@ exports.updateOrderStatus = async (req, res) => {
       `, [id]);
       
       await sendOrderConfirmationEmail(updatedOrder.customer_email, updatedOrder, itemsRes.rows);
+    } else if (['Processing', 'Shipped', 'Delivered'].includes(status) && updatedOrder.customer_email) {
+      // Send standard status update email for post-payment statuses
+      await sendOrderStatusUpdateEmail(updatedOrder.customer_email, updatedOrder, status);
     }
 
     res.status(200).json({ success: true, message: 'Order status updated successfully' });
@@ -160,14 +164,14 @@ exports.getOrderById = async (req, res) => {
     const { id } = req.params;
 
     // 1. Get the main order info
-    const orderRes = await pool.query(`SELECT id, order_number, customer_phone, customer_name, customer_email, total_amount, status, payment_method, mpesa_receipt, created_at, franchise_id, customer_id_number, delivery_method, delivery_address, subtotal, discount_amount, tax_amount FROM orders WHERE id = $1`, [id]);
+    const orderRes = await pool.query(\`SELECT id, order_number, customer_phone, customer_name, customer_email, total_amount, status, payment_method, mpesa_receipt, created_at, franchise_id, customer_id_number, delivery_method, delivery_address, subtotal, discount_amount, tax_amount FROM orders WHERE id = $1\`, [id]);
 
     if (orderRes.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Order not found' });
     }
 
     // 2. Get the items inside the order, joined with actual product names
-    const itemsRes = await pool.query(`
+    const itemsRes = await pool.query(\`
       SELECT 
         oi.quantity, 
         oi.price_at_time, 
@@ -176,7 +180,7 @@ exports.getOrderById = async (req, res) => {
       FROM order_items oi
       JOIN products p ON oi.product_id = p.id
       WHERE oi.order_id = $1
-    `, [id]);
+    \`, [id]);
 
     // 3. Combine and send to React
     res.status(200).json({

@@ -400,9 +400,76 @@ const notifyAdminOfNewRSVP = async (details, eventTitle) => {
   }
 };
 
+/**
+ * Sends status update emails (Processing, Shipped, Delivered) to the client
+ */
+const sendOrderStatusUpdateEmail = async (customerEmail, order, newStatus) => {
+  if (!customerEmail) {
+    console.error('No customer email provided, skipping status update email.');
+    return;
+  }
+
+  // Determine message and color based on status
+  let statusMessage = '';
+  let statusColor = '#811816'; // Default Maroon
+  let statusIconText = '';
+
+  if (newStatus === 'Processing') {
+    statusMessage = 'Great news! Your wholesale order is now being processed by our fulfillment team. We are carefully packing your TCM products.';
+    statusColor = '#d2a356'; // Gold
+    statusIconText = 'PROCESSING';
+  } else if (newStatus === 'Shipped') {
+    statusMessage = 'Your order has been dispatched and is currently out for delivery via our logistics partners. Please ensure someone is available at the delivery location.';
+    statusColor = '#4a7c59'; // Greenish
+    statusIconText = 'SHIPPED';
+  } else if (newStatus === 'Delivered') {
+    statusMessage = 'Your order has been successfully delivered. Thank you for partnering with Fohow Eden Life!';
+    statusColor = '#1c1a16'; // Black
+    statusIconText = 'DELIVERED';
+  } else {
+    // If it's another status, don't send an email from here
+    return;
+  }
+
+  try {
+    const mailOptions = {
+      from: `"Fohow Eden Life" <${process.env.EMAIL_USER}>`,
+      to: customerEmail,
+      subject: `Order Update: ${newStatus} - ${order.order_number || '#' + order.id}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #1c1a16; max-w: 600px; margin: 0 auto; border: 1px solid #ede8df; border-radius: 12px; overflow: hidden;">
+            <div style="background-color: #811816; padding: 20px; text-align: center;">
+                <h1 style="color: #f7f4ef; margin: 0;">FOHOW EDEN LIFE</h1>
+                <p style="color: #d2a356; margin: 5px 0 0 0; font-size: 12px; letter-spacing: 2px;">ORDER UPDATE</p>
+            </div>
+            <div style="padding: 30px;">
+                <h2 style="font-family: Georgia, serif;">Hello ${order.customer_name},</h2>
+                <div style="background-color: #faf9f6; padding: 20px; border-radius: 8px; border-left: 4px solid ${statusColor}; margin: 20px 0;">
+                  <p style="margin: 0; font-size: 12px; font-weight: bold; color: ${statusColor}; tracking: 1px;">STATUS: ${statusIconText}</p>
+                  <p style="margin: 10px 0 0 0;"><strong>Order Number:</strong> ${order.order_number || '#' + order.id}</p>
+                </div>
+                <p>${statusMessage}</p>
+                <br>
+                <p style="font-size: 12px; color: #8a8070;">If you have any questions, please contact our support team via our official WhatsApp line.</p>
+            </div>
+            <div style="background-color: #fcfbf9; padding: 15px; text-align: center; border-top: 1px solid #ede8df;">
+              <p style="margin: 0; font-size: 11px; color: #a0998e;">Cargen House, Nairobi | © 2026 Fohow Eden Life</p>
+            </div>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Order ${newStatus} email sent to ${customerEmail}`);
+  } catch (error) {
+    console.error(`❌ Error sending ${newStatus} email:`, error);
+  }
+};
+
 module.exports = { 
   sendOrderConfirmationEmail,
   sendOrderPendingEmail,
+  sendOrderStatusUpdateEmail,
   notifyAdminOfNewConsultation,
   sendClientConsultationConfirmation,
   sendClientRSVPConfirmation,
