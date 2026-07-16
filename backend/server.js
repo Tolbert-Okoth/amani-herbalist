@@ -37,6 +37,9 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
+// 🟢 0. Trust Proxy (Required for Render/Heroku load balancers)
+app.set('trust proxy', 1);
+
 // 🟢 1. Security Headers (HSTS, CSP, etc.)
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
