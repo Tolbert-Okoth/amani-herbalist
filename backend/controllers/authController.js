@@ -60,7 +60,7 @@ const adminLogin = async (req, res) => {
     res.cookie('fohow_admin_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // true on live server, false on localhost
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 8 * 60 * 60 * 1000, // 8 hours (matches JWT expiration)
       path: '/'
     });
@@ -85,7 +85,7 @@ const adminLogout = async (req, res) => {
   res.clearCookie('fohow_admin_token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
     path: '/'
   });
 
