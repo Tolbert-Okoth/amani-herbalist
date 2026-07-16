@@ -490,17 +490,24 @@ const Home = () => {
 
           {/* DYNAMIC REGIONAL ADS CAROUSEL */}
           {regionalAds.length > 0 && (
-            <div className="relative z-10 w-full rounded-2xl overflow-hidden shadow-2xl border border-[#d2a356]/30 bg-[#1c1a16] group">
-              <div className="relative w-full aspect-[4/3] md:aspect-[21/9]">
+            <div className="relative z-10 w-full rounded-2xl overflow-hidden shadow-2xl border border-[#d2a356]/30 bg-[#1a0504] group mt-12">
+              <div className="relative w-full aspect-[4/5] sm:aspect-[4/3] md:aspect-[21/9]">
                 {regionalAds.map((ad, i) => (
                   <div 
                     key={ad.id} 
                     className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${i === currentAdIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
                   >
+                    {/* Blurred backdrop for a premium look when flyers don't match the aspect ratio */}
+                    <img 
+                      src={api.getImageUrl(ad.flyer_url)} 
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover blur-3xl opacity-30 scale-110"
+                    />
+                    {/* Main flyer image contained within the frame to prevent cropping */}
                     <img 
                       src={api.getImageUrl(ad.flyer_url)} 
                       alt={ad.title}
-                      className="w-full h-full object-cover"
+                      className="relative z-10 w-full h-full object-contain p-2 md:p-6 drop-shadow-2xl"
                     />
                   </div>
                 ))}
