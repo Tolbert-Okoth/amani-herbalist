@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const { sendOrderConfirmationEmail } = require('../utils/emailService');
 // --- GET ALL ORDERS (Upgraded for visual dashboard) ---
 exports.getAllOrders = async (req, res) => {
   try {
