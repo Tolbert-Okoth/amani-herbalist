@@ -64,11 +64,13 @@ app.use(cors({
     if (!origin) return callback(null, true);
     
     const isLocalhost = origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:');
-    const isAllowed = isLocalhost || allowedOrigins.includes(origin);
+    const isVercel = origin.endsWith('.vercel.app');
+    const isAllowed = isLocalhost || isVercel || allowedOrigins.includes(origin);
 
     if (isAllowed) {
       callback(null, true);
     } else {
+      console.error(`[CORS Blocked]: Origin ${origin} not allowed`);
       callback(new Error('Not allowed by CORS'));
     }
   },
