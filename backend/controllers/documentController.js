@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const { deleteUploadedFile } = require('../utils/fileCleanup');
 exports.getAllDocuments = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM documents ORDER BY uploaded_at DESC');
@@ -48,11 +49,8 @@ exports.updateDocument = async (req, res) => {
     
     if (req.file) {
       file_url = req.file.path;
-      // delete old file if necessary (skipping for now to avoid side-effects if someone's downloading it, or implement fs.unlink)
       if (existingDoc.file_url) {
-        const fileName = path.basename(existingDoc.file_url);
-        const filePath = path.join(__dirname, '..', 'uploads', 'documents', fileName);
-        fs.unlink(filePath, (err) => { if (err) console.error('Failed to delete old file:', err); });
+        deleteUploadedFile(existingDoc.file_url);
       }
     }
     
@@ -86,17 +84,9 @@ exports.deleteDocument = async (req, res) => {
     // Delete from database
     await pool.query('DELETE FROM documents WHERE id = $1', [id]);
     
-    // Delete file from disk
+    // Delete file from disk/Cloudinary
     if (fileUrl) {
-      const fileName = path.basename(fileUrl);
-      const filePath = path.join(__dirname, '..', 'uploads', 'documents', fileName);
-      
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.error(`Failed to delete file from disk: ${filePath}`, err);
-          // Don't throw error to client since DB record is deleted
-        }
-      });
+      deleteUploadedFile(fileUrl);
     }
     
     res.status(200).json({ success: true, message: 'Document deleted successfully' });
