@@ -26,7 +26,7 @@ const api = {
 
     } catch (error) {
       console.error("API GET Error:", error);
-      return { data: null, ok: false };
+      return { data: { error: "Network Error: " + error.message }, ok: false, raw: null };
     }
   },
 
@@ -60,7 +60,7 @@ const api = {
 
     } catch (error) {
       console.error("API POST Error:", error);
-      return { data: { error: "Network error" }, ok: false };
+      return { data: { error: "Network Error: " + error.message }, ok: false, raw: null };
     }
   },
 
