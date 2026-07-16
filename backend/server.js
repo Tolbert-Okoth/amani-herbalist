@@ -108,6 +108,14 @@ app.get('/', (req, res) => {
 });
 
 // API Routes
+app.use('/api/debug-env', (req, res) => {
+  res.json({
+    cloudinary_name: process.env.CLOUDINARY_CLOUD_NAME ? 'SET' : 'MISSING',
+    cloudinary_key: process.env.CLOUDINARY_API_KEY ? 'SET' : 'MISSING',
+    cloudinary_secret: process.env.CLOUDINARY_API_SECRET ? 'SET' : 'MISSING',
+  });
+});
+
 app.use('/api/products',      productRoutes);
 app.use('/api/orders',        orderRoutes);
 app.use('/api/mpesa',         mpesaRoutes);
