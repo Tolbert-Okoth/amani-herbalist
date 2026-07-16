@@ -164,14 +164,14 @@ exports.getOrderById = async (req, res) => {
     const { id } = req.params;
 
     // 1. Get the main order info
-    const orderRes = await pool.query(\`SELECT id, order_number, customer_phone, customer_name, customer_email, total_amount, status, payment_method, mpesa_receipt, created_at, franchise_id, customer_id_number, delivery_method, delivery_address, subtotal, discount_amount, tax_amount FROM orders WHERE id = $1\`, [id]);
+    const orderRes = await pool.query(`SELECT id, order_number, customer_phone, customer_name, customer_email, total_amount, status, payment_method, mpesa_receipt, created_at, franchise_id, customer_id_number, delivery_method, delivery_address, subtotal, discount_amount, tax_amount FROM orders WHERE id = $1`, [id]);
 
     if (orderRes.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Order not found' });
     }
 
     // 2. Get the items inside the order, joined with actual product names
-    const itemsRes = await pool.query(\`
+    const itemsRes = await pool.query(`
       SELECT 
         oi.quantity, 
         oi.price_at_time, 
@@ -180,7 +180,7 @@ exports.getOrderById = async (req, res) => {
       FROM order_items oi
       JOIN products p ON oi.product_id = p.id
       WHERE oi.order_id = $1
-    \`, [id]);
+    `, [id]);
 
     // 3. Combine and send to React
     res.status(200).json({
