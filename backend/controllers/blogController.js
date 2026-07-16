@@ -1,11 +1,4 @@
-const { Pool } = require('pg');
-const { generateUniqueSlug } = require('../utils/slugify');
-const { deleteUploadedFile } = require('../utils/fileCleanup');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
+const pool = require('../config/db');
 // Get All Blogs
 exports.getAllBlogs = async (req, res) => {
   try {

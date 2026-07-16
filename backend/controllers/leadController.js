@@ -1,11 +1,4 @@
-const { Pool } = require('pg');
-require('dotenv').config();
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
+const pool = require('../config/db');
 /**
  * Saves a new WhatsApp lead from the Exit-Intent Popup.
  */

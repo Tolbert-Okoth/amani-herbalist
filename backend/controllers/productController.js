@@ -1,13 +1,4 @@
-const { Pool } = require('pg');
-const { generateUniqueSlug } = require('../utils/slugify');
-const { deleteUploadedFile } = require('../utils/fileCleanup');
-
-// Connect to the database
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
+const pool = require('../config/db');
 // Fetch all products with their category names
 exports.getAllProducts = async (req, res) => {
   try {

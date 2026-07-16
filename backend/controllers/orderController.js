@@ -1,12 +1,4 @@
-const { Pool } = require('pg');
-require('dotenv').config();
-const { sendOrderConfirmationEmail } = require('../utils/emailService');
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
+const pool = require('../config/db');
 // --- GET ALL ORDERS (Upgraded for visual dashboard) ---
 exports.getAllOrders = async (req, res) => {
   try {

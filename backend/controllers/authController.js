@@ -1,17 +1,4 @@
-const { Pool } = require('pg');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const path = require('path');
-const { logSecurityEvent } = require('../utils/securityLogger');
-
-// Load environment variables from the correct directory
-require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
+const pool = require('../config/db');
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = '8h'; // Token valid for 8 hours
 

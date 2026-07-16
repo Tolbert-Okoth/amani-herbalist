@@ -1,12 +1,4 @@
-const { Pool } = require('pg');
-const fs = require('fs');
-const path = require('path');
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
+const pool = require('../config/db');
 exports.getAllDocuments = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM documents ORDER BY uploaded_at DESC');
