@@ -42,7 +42,7 @@ const mpesaAuth = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("M-Pesa Auth Error:", error.response ? error.response.data : error.message);
-    res.status(401).json({ error: "Failed to authenticate with M-Pesa" });
+    res.status(500).json({ error: "Failed to authenticate with M-Pesa. Please verify your Safaricom credentials in Render." });
   }
 };
 

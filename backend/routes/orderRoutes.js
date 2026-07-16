@@ -12,7 +12,7 @@ router.get('/:id', adminAuth, orderController.getOrderById);
 router.put('/:id/status', adminAuth, orderController.updateOrderStatus);
 router.delete('/:id', adminAuth, orderController.deleteOrder);
 
-// 2. Checkout Route (Handles order creation + M-Pesa STK Push)
-router.post('/checkout', mpesaAuth, processCheckout);
+// 2. Checkout Route (Handles order creation for Manual Paybill Flow)
+router.post('/checkout', processCheckout);
 
 module.exports = router;
