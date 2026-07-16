@@ -12,7 +12,7 @@ process.on('uncaughtException', (err) => {
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
+  // process.exit(1); // Removed to prevent third-party library rejections from crashing the server
 });
 
 const productRoutes      = require('./routes/productRoutes');
