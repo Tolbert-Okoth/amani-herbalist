@@ -344,12 +344,12 @@ const Checkout = () => {
         </div>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-6 py-12 pb-24 flex flex-wrap gap-12 items-start">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 sm:py-12 pb-24 flex flex-col lg:flex-row gap-10 lg:gap-12 items-start">
 
         {/* ══════════════════════════════
             LEFT: FORM
         ══════════════════════════════ */}
-        <div ref={leftRef} className={`flex-1 min-w-0 fade-up ${leftVisible ? 'in' : ''}`}>
+        <div ref={leftRef} className={`w-full lg:flex-1 min-w-0 fade-up ${leftVisible ? 'in' : ''}`}>
           <h1 className="text-[clamp(2rem,3.5vw,3rem)] font-light leading-[1.1] text-[#1c1a16] mb-10">
             Complete your<br /><em className="text-[#811816] italic">order.</em>
           </h1>
@@ -581,7 +581,7 @@ const Checkout = () => {
         {/* ══════════════════════════════
             RIGHT: ORDER SUMMARY (dark)
         ══════════════════════════════ */}
-        <div ref={rightRef} className={`w-[clamp(320px,35vw,440px)] shrink-0 fade-up delay-200 ${rightVisible ? 'in' : ''}`}>
+        <div ref={rightRef} className={`w-full lg:w-[clamp(320px,35vw,440px)] shrink-0 fade-up delay-200 ${rightVisible ? 'in' : ''}`}>
           <div className="sticky top-[5.5rem] bg-[#2a0808] rounded-[32px] p-[clamp(1.75rem,4vw,2.5rem)] text-[#f7f4ef] overflow-hidden shadow-2xl">
             {/* bg glow */}
             <div className="absolute top-[-20%] right-[-15%] w-[60%] aspect-square rounded-full bg-[radial-gradient(circle,#811816_0%,transparent_70%)] opacity-40 pointer-events-none" />
