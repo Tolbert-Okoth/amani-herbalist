@@ -177,7 +177,7 @@ const AdminDocuments = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <a 
-                      href={`http://localhost:5001${doc.file_url}`} 
+                      href={api.getImageUrl(doc.file_url)} 
                       target="_blank" 
                       rel="noreferrer"
                       className="inline-block p-2 text-stone-400 hover:text-[#d2a356] transition-colors"

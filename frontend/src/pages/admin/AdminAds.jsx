@@ -134,9 +134,9 @@ const AdminAds = () => {
           ads.map(ad => (
             <div key={ad.id} className={`bg-white rounded-2xl overflow-hidden border transition-all ${ad.is_active ? 'border-[#d2a356]/30 shadow-md' : 'border-stone-200 opacity-60 grayscale-[50%]'}`}>
               <div className="aspect-[4/5] bg-stone-100 relative group">
-                <img src={`http://localhost:5001${ad.flyer_url}`} alt={ad.title} className="w-full h-full object-cover" />
+                <img src={api.getImageUrl(ad.flyer_url)} alt={ad.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <button onClick={() => window.open(`http://localhost:5001${ad.flyer_url}`, '_blank')} className="bg-white/90 text-stone-900 p-2 rounded-full hover:scale-110 transition-transform">
+                  <button onClick={() => window.open(api.getImageUrl(ad.flyer_url), '_blank')} className="bg-white/90 text-stone-900 p-2 rounded-full hover:scale-110 transition-transform">
                     <Eye size={20} />
                   </button>
                 </div>

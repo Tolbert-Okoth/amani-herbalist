@@ -257,7 +257,7 @@ const AdminEvents = () => {
                       <div className="flex items-center gap-3">
                         {event.flyer_url && (
                           <div className="w-10 h-10 rounded overflow-hidden shrink-0 border border-stone-200">
-                            <img src={`http://localhost:5001${event.flyer_url}`} alt="Flyer" className="w-full h-full object-cover" />
+                            <img src={api.getImageUrl(event.flyer_url)} alt="Flyer" className="w-full h-full object-cover" />
                           </div>
                         )}
                         <span>{event.title}</span>

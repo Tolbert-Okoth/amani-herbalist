@@ -118,7 +118,7 @@ const Seminars = () => {
                         {/* Flyer Ad Space */}
                         <div className="w-full h-48 bg-stone-100 relative overflow-hidden border-b border-stone-100">
                           <img 
-                            src={event.flyer_url ? `http://localhost:5001${event.flyer_url}` : '/assets/fohow-placeholder-flyer.png'}
+                            src={event.flyer_url ? api.getImageUrl(event.flyer_url) : '/assets/fohow-placeholder-flyer.png'}
                             alt={event.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />

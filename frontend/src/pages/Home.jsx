@@ -498,7 +498,7 @@ const Home = () => {
                     className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${i === currentAdIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
                   >
                     <img 
-                      src={`http://localhost:5001${ad.flyer_url}`} 
+                      src={api.getImageUrl(ad.flyer_url)} 
                       alt={ad.title}
                       className="w-full h-full object-cover"
                     />

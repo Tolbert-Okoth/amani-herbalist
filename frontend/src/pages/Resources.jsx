@@ -121,7 +121,7 @@ const Resources = () => {
                 </div>
                 
                 <a 
-                  href={`http://localhost:5001${doc.file_url}`} 
+                  href={api.getImageUrl(doc.file_url)} 
                   target="_blank" 
                   rel="noreferrer"
                   className="flex items-center justify-center w-full py-3.5 px-4 bg-stone-50 text-[#1a0504] font-bold text-sm rounded-xl hover:bg-[#811816] hover:text-[#f7f4ef] hover:shadow-lg transition-all duration-300 gap-2 border border-stone-200 hover:border-transparent group/btn"
