@@ -177,7 +177,7 @@ const PromoPopup = ({ currentCategory = 'All' }) => { // 🟢 NEW: Accepts conte
   useEffect(() => {
     if (phase === 'open' && featuredProduct) {
       // Silently log the impression to the database
-      api.post('/ads/track', { 
+      api.post('/banners/track', { 
         productId: featuredProduct.id, 
         event: 'impression' 
       }).catch(() => {}); // Ignore errors, don't interrupt UX

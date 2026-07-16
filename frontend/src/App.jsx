@@ -78,7 +78,6 @@ const App = () => {
 
             {/* ADMIN LOGIN — standalone, no layout guard */}
             <Route path="/eden-secure-portal-hq/login" element={<AdminLogin />} />
-
             {/* ADMIN ROUTES — protected by AdminRoute and AdminLayout checks */}
             <Route 
               path="/eden-secure-portal-hq" 
@@ -97,7 +96,7 @@ const App = () => {
               <Route path="settings" element={<AdminSettings />} />
               <Route path="consultations" element={<AdminConsultations />} />
               <Route path="events" element={<AdminEvents />} />
-              <Route path="ads" element={<AdminAds />} />
+              <Route path="regional-promos" element={<AdminAds />} />
               <Route path="documents" element={<AdminDocuments />} />
             </Route>
 

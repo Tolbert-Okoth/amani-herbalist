@@ -114,7 +114,7 @@ const Home = () => {
           setStats({ totalProducts: allProducts.length || 38 });
         }
 
-        const adsResponse = await api.get('/regional-ads');
+        const adsResponse = await api.get('/regional-promos');
         if (adsResponse.ok && Array.isArray(adsResponse.data)) {
           const activeAds = adsResponse.data.filter(ad => ad.is_active);
           setRegionalAds(activeAds);

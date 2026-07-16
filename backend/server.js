@@ -118,8 +118,8 @@ app.use('/api/settings',      settingsRoutes);
 app.use('/api/leads',         leadRoutes);
 app.use('/api/franchises',    franchiseRoutes);
 app.use('/api/events',        eventRoutes);
-app.use('/api/ads',           adsRoutes);
-app.use('/api/regional-ads',  regionalAdsRoutes);
+app.use('/api/banners',       adsRoutes);
+app.use('/api/regional-promos', regionalAdsRoutes);
 app.use('/api/documents',     documentRoutes);
 
 

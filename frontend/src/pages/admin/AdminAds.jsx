@@ -24,7 +24,7 @@ const AdminAds = () => {
   const fetchAds = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/regional-ads');
+      const response = await api.get('/regional-promos');
       if (response.ok && Array.isArray(response.data)) {
         setAds(response.data);
       }
@@ -38,7 +38,7 @@ const AdminAds = () => {
 
   const handleToggleStatus = async (ad) => {
     try {
-      const response = await api.put(`/regional-ads/${ad.id}/status`, { is_active: !ad.is_active });
+      const response = await api.put(`/regional-promos/${ad.id}/status`, { is_active: !ad.is_active });
       if (response.ok) {
         setAds(ads.map(a => a.id === ad.id ? { ...a, is_active: !a.is_active } : a));
         showToast(`Ad marked as ${!ad.is_active ? 'Active' : 'Inactive'}`, 'success');
@@ -53,7 +53,7 @@ const AdminAds = () => {
     if (!window.confirm(`Are you sure you want to permanently delete the ad "${title}"?`)) return;
     
     try {
-      const response = await api.delete(`/regional-ads/${id}`);
+      const response = await api.delete(`/regional-promos/${id}`);
       if (response.ok) {
         showToast('Ad deleted successfully', 'success');
         fetchAds();
@@ -80,7 +80,7 @@ const AdminAds = () => {
       data.append('display_order', formData.display_order);
       data.append('flyer', flyerFile);
 
-      const response = await api.post('/regional-ads', data);
+      const response = await api.post('/regional-promos', data);
 
       if (response.ok) {
         showToast('Ad uploaded successfully', 'success');

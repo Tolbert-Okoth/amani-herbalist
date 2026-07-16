@@ -31,7 +31,7 @@ const SocialProofTicker = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get('/ads/social-proof');
+        const res = await api.get('/banners/social-proof');
         if (res.data?.success && res.data.data.length > 0) {
           setNotifications(res.data.data);
         }

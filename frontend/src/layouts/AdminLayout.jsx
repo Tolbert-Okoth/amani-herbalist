@@ -13,7 +13,7 @@ const navItems = [
   { name: 'Documents',      path: '/eden-secure-portal-hq/documents',     icon: FileText, bossOnly: true },
   { name: 'Consultations',  path: '/eden-secure-portal-hq/consultations', icon: Calendar, bossOnly: true },
   { name: 'Events',         path: '/eden-secure-portal-hq/events',        icon: Calendar, bossOnly: true },
-  { name: 'Regional Ads',   path: '/eden-secure-portal-hq/ads',           icon: ImageIcon, bossOnly: true },
+  { name: 'Regional Ads',   path: '/eden-secure-portal-hq/regional-promos', icon: ImageIcon, bossOnly: true },
   { name: 'Settings',       path: '/eden-secure-portal-hq/settings',      icon: Settings, bossOnly: true },
 ];
 
