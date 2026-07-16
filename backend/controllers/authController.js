@@ -1,4 +1,8 @@
 const pool = require('../config/db');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { logSecurityEvent } = require('../utils/securityLogger');
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = '8h'; // Token valid for 8 hours
 
