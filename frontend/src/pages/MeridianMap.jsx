@@ -220,7 +220,6 @@ const MeridianMap = () => {
 
                     <Link 
                       to="/shop" 
-                      state={{ search: activeZone.tcm_pillar.split(' ')[0] }}
                       className="w-full flex items-center justify-center px-7 py-3.5 bg-[#d2a356] text-[#1c1a16] rounded-xl text-[0.9rem] font-bold tracking-wide transition-all hover:bg-[#e0b772] hover:drop-shadow-[0_0_15px_rgba(210,163,86,0.5)] shrink-0"
                     >
                       View in Catalog <ArrowRight size={16} className="ml-2" />
