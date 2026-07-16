@@ -85,43 +85,45 @@ const AdminBlog = () => {
       </div>
 
       <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm">
-        <table className="w-full text-left">
-          <thead className="bg-stone-50 text-stone-500 text-sm border-b border-stone-200">
-            <tr>
-              <th className="px-6 py-4 font-medium">Image</th>
-              <th className="px-6 py-4 font-medium">Title</th>
-              <th className="px-6 py-4 font-medium">Date</th>
-              <th className="px-6 py-4 font-medium">Status</th>
-              <th className="px-6 py-4 font-medium text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-stone-100 text-sm">
-            {loading ? <tr><td colSpan="5" className="py-8 text-center text-stone-500">Loading articles...</td></tr> : 
-              blogs.length === 0 ? <tr><td colSpan="5" className="py-8 text-center text-stone-500">No blog posts yet.</td></tr> :
-              blogs.map((blog) => (
-                <tr key={blog.id} className="hover:bg-[#fcf5f5]/50 transition-colors">
-                  <td className="px-6 py-4">
-                    {blog.image_url ? 
-                      <img src={api.getImageUrl(blog.image_url)} alt="cover" className="w-16 h-10 object-cover rounded shadow-sm border border-stone-100" /> : 
-                      <div className="w-16 h-10 bg-stone-100 rounded flex items-center justify-center text-stone-400"><ImageIcon className="w-4 h-4"/></div>
-                    }
-                  </td>
-                  <td className="px-6 py-4 font-medium text-stone-900">{blog.title}</td>
-                  <td className="px-6 py-4 text-stone-500">{new Date(blog.created_at).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${blog.is_published ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                      {blog.is_published ? 'Published' : 'Draft'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button onClick={() => openModal(blog)} className="p-2 text-stone-400 hover:text-[#d2a356] transition-colors"><Edit className="w-4 h-4" /></button>
-                    <button onClick={() => handleDelete(blog.id, blog.title)} className="p-2 text-stone-400 hover:text-red-600 transition-colors"><Trash2 className="w-4 h-4" /></button>
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left whitespace-nowrap">
+            <thead className="bg-stone-50 text-stone-500 text-sm border-b border-stone-200">
+              <tr>
+                <th className="px-6 py-4 font-medium">Image</th>
+                <th className="px-6 py-4 font-medium">Title</th>
+                <th className="px-6 py-4 font-medium">Date</th>
+                <th className="px-6 py-4 font-medium">Status</th>
+                <th className="px-6 py-4 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100 text-sm">
+              {loading ? <tr><td colSpan="5" className="py-8 text-center text-stone-500">Loading articles...</td></tr> : 
+                blogs.length === 0 ? <tr><td colSpan="5" className="py-8 text-center text-stone-500">No blog posts yet.</td></tr> :
+                blogs.map((blog) => (
+                  <tr key={blog.id} className="hover:bg-[#fcf5f5]/50 transition-colors">
+                    <td className="px-6 py-4">
+                      {blog.image_url ? 
+                        <img src={api.getImageUrl(blog.image_url)} alt="cover" className="w-16 h-10 object-cover rounded shadow-sm border border-stone-100" /> : 
+                        <div className="w-16 h-10 bg-stone-100 rounded flex items-center justify-center text-stone-400"><ImageIcon className="w-4 h-4"/></div>
+                      }
+                    </td>
+                    <td className="px-6 py-4 font-medium text-stone-900">{blog.title}</td>
+                    <td className="px-6 py-4 text-stone-500">{new Date(blog.created_at).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${blog.is_published ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                        {blog.is_published ? 'Published' : 'Draft'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <button onClick={() => openModal(blog)} className="p-2 text-stone-400 hover:text-[#d2a356] transition-colors"><Edit className="w-4 h-4" /></button>
+                      <button onClick={() => handleDelete(blog.id, blog.title)} className="p-2 text-stone-400 hover:text-red-600 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Editor Modal */}

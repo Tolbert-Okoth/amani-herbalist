@@ -131,80 +131,82 @@ const AdminDocuments = () => {
       </div>
 
       <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm">
-        <table className="w-full text-left">
-          <thead className="bg-stone-50 text-stone-500 text-sm border-b border-stone-200">
-            <tr>
-              <th className="px-6 py-4 font-medium">Document Title</th>
-              <th className="px-6 py-4 font-medium">Status</th>
-              <th className="px-6 py-4 font-medium">Date Uploaded</th>
-              <th className="px-6 py-4 font-medium text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-stone-100 text-sm">
-            {loading ? (
-              <tr><td colSpan="3" className="py-8 text-center text-stone-500">Loading documents...</td></tr>
-            ) : documents.length === 0 ? (
-              <tr><td colSpan="3" className="py-8 text-center text-stone-500">No documents uploaded yet.</td></tr>
-            ) : (
-              documents.map((doc) => (
-                <tr key={doc.id} className="hover:bg-[#fcf5f5]/50 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-[#fdf8ef] flex items-center justify-center text-[#d2a356] shrink-0">
-                        <FileText size={18} />
+        <div className="overflow-x-auto">
+          <table className="w-full text-left whitespace-nowrap">
+            <thead className="bg-stone-50 text-stone-500 text-sm border-b border-stone-200">
+              <tr>
+                <th className="px-6 py-4 font-medium">Document Title</th>
+                <th className="px-6 py-4 font-medium">Status</th>
+                <th className="px-6 py-4 font-medium">Date Uploaded</th>
+                <th className="px-6 py-4 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100 text-sm">
+              {loading ? (
+                <tr><td colSpan="3" className="py-8 text-center text-stone-500">Loading documents...</td></tr>
+              ) : documents.length === 0 ? (
+                <tr><td colSpan="3" className="py-8 text-center text-stone-500">No documents uploaded yet.</td></tr>
+              ) : (
+                documents.map((doc) => (
+                  <tr key={doc.id} className="hover:bg-[#fcf5f5]/50 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#fdf8ef] flex items-center justify-center text-[#d2a356] shrink-0">
+                          <FileText size={18} />
+                        </div>
+                        <div>
+                          <div className="font-medium text-stone-900">{doc.title}</div>
+                          {doc.excerpt && (
+                            <div className="text-xs text-stone-500 mt-1 line-clamp-1">{doc.excerpt}</div>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-medium text-stone-900">{doc.title}</div>
-                        {doc.excerpt && (
-                          <div className="text-xs text-stone-500 mt-1 line-clamp-1">{doc.excerpt}</div>
-                        )}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    {doc.is_published ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-200">
-                        <CheckCircle size={12} /> Published
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-200">
-                        <Clock size={12} /> Draft
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 text-stone-500">
-                    {new Date(doc.uploaded_at).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a 
-                      href={api.getImageUrl(doc.file_url)} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="inline-block p-2 text-stone-400 hover:text-[#d2a356] transition-colors"
-                      title="Download/View"
-                    >
-                      <Download className="w-4 h-4" />
-                    </a>
-                    <button 
-                      onClick={() => openEditModal(doc)} 
-                      className="inline-block p-2 text-stone-400 hover:text-blue-600 transition-colors ml-2"
-                      title="Edit"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(doc.id, doc.title)} 
-                      className="inline-block p-2 text-stone-400 hover:text-red-600 transition-colors ml-2"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+                    </td>
+                    <td className="px-6 py-4">
+                      {doc.is_published ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-200">
+                          <CheckCircle size={12} /> Published
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-200">
+                          <Clock size={12} /> Draft
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-stone-500">
+                      {new Date(doc.uploaded_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <a 
+                        href={api.getImageUrl(doc.file_url)} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="inline-block p-2 text-stone-400 hover:text-[#d2a356] transition-colors"
+                        title="Download/View"
+                      >
+                        <Download className="w-4 h-4" />
+                      </a>
+                      <button 
+                        onClick={() => openEditModal(doc)} 
+                        className="inline-block p-2 text-stone-400 hover:text-blue-600 transition-colors ml-2"
+                        title="Edit"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(doc.id, doc.title)} 
+                        className="inline-block p-2 text-stone-400 hover:text-red-600 transition-colors ml-2"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {isModalOpen && (
