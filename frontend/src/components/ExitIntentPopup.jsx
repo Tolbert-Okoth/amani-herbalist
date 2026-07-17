@@ -62,7 +62,7 @@ function injectStyles(id, css) {
 }
 
 // ─── Phone validation ─────────────────────────────────────────────────────────
-const KE_PHONE_RE = /^(?:\+?254|0)(?:7[0-9]{8}|1[01][0-9]{7})$/;
+const KE_PHONE_RE = /^(?:\+?254)?0?(?:7[0-9]{8}|1[01][0-9]{7})$/;
 
 function validatePhone(raw) {
   const digits = raw.replace(/[\s\-()]/g, '');
