@@ -60,28 +60,55 @@ const Navbar = () => {
 
           {/* Desktop Navigation - Glowing Gold Hover States */}
           <div className="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2 w-max">
-            <Link to="/shop" className="font-dm text-[0.95rem] font-medium text-[#5a5648] transition-all duration-300 hover:text-[#d2a356] hover:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Apothecary</Link>
-            <Link to="/philosophy" className="font-dm text-[0.95rem] font-medium text-[#5a5648] transition-all duration-300 hover:text-[#d2a356] hover:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Philosophy</Link>
-            <Link to="/blog" className="font-dm text-[0.95rem] font-medium text-[#5a5648] transition-all duration-300 hover:text-[#d2a356] hover:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Journal</Link>
-            <Link to="/clinical-map" className="font-dm text-[0.95rem] font-medium text-[#5a5648] transition-all duration-300 hover:text-[#d2a356] hover:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Clinical Map</Link>
+            {[
+              { path: '/shop', label: 'Apothecary' },
+              { path: '/philosophy', label: 'Philosophy' },
+              { path: '/blog', label: 'Journal' },
+              { path: '/clinical-map', label: 'Clinical Map' }
+            ].map(link => (
+              <Link 
+                key={link.path} 
+                to={link.path} 
+                className={`font-dm text-[0.95rem] font-medium transition-all duration-300 ${
+                  location.pathname.startsWith(link.path) 
+                    ? 'text-[#d2a356] drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]' 
+                    : 'text-[#5a5648] hover:text-[#d2a356] hover:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
             
             <div className="w-[1px] h-4 bg-[#d2a356]/40 hidden lg:block" />
             
             <div className="relative group">
-              <button className="font-dm text-[0.95rem] font-medium text-[#811816] flex items-center gap-1 transition-all duration-300 hover:text-[#d2a356]">
+              <button className={`font-dm text-[0.95rem] font-medium flex items-center gap-1 transition-all duration-300 ${
+                ['/resources', '/seminars'].some(p => location.pathname.startsWith(p))
+                  ? 'text-[#d2a356] drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]'
+                  : 'text-[#811816] hover:text-[#d2a356]'
+              }`}>
                 B2B Hub <ChevronDown size={14} className="mt-0.5 group-hover:rotate-180 transition-transform duration-300" />
               </button>
               <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
                 <div className="bg-white rounded-2xl shadow-xl border border-stone-100 p-2 flex flex-col min-w-[180px]">
-                  <Link to="/resources" className="px-4 py-2.5 hover:bg-[#fcf5f5] rounded-xl text-sm font-medium text-[#5a5648] hover:text-[#811816] transition-colors text-center">Resource Center</Link>
-                  <Link to="/seminars" className="px-4 py-2.5 hover:bg-[#fcf5f5] rounded-xl text-sm font-medium text-[#5a5648] hover:text-[#811816] transition-colors text-center">Upcoming Seminars</Link>
+                  <Link to="/resources" className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-colors text-center ${location.pathname.startsWith('/resources') ? 'bg-[#fcf5f5] text-[#811816]' : 'text-[#5a5648] hover:bg-[#fcf5f5] hover:text-[#811816]'}`}>Resource Center</Link>
+                  <Link to="/seminars" className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-colors text-center ${location.pathname.startsWith('/seminars') ? 'bg-[#fcf5f5] text-[#811816]' : 'text-[#5a5648] hover:bg-[#fcf5f5] hover:text-[#811816]'}`}>Upcoming Seminars</Link>
                 </div>
               </div>
             </div>
             
             <div className="w-[1px] h-4 bg-[#d2a356]/40 hidden lg:block" />
 
-            <Link to="/consultations" className="font-dm text-[0.95rem] font-medium text-[#5a5648] transition-all duration-300 hover:text-[#d2a356] hover:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Consultations</Link>
+            <Link 
+              to="/consultations" 
+              className={`font-dm text-[0.95rem] font-medium transition-all duration-300 ${
+                location.pathname.startsWith('/consultations')
+                  ? 'text-[#d2a356] drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]'
+                  : 'text-[#5a5648] hover:text-[#d2a356] hover:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]'
+              }`}
+            >
+              Consultations
+            </Link>
           </div>
 
           {/* Right Side Icons */}
@@ -119,14 +146,30 @@ const Navbar = () => {
         }`}
       >
         <div className="flex flex-col gap-8 text-center mt-8">
-          <Link to="/" className="font-garamond text-4xl font-light text-[#1c1a16] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Home</Link>
-          <Link to="/shop" className="font-garamond text-4xl font-light text-[#1c1a16] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">The Apothecary</Link>
-          <Link to="/philosophy" className="font-garamond text-4xl font-light text-[#1c1a16] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Our Philosophy</Link>
-          <Link to="/blog" className="font-garamond text-4xl font-light text-[#1c1a16] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Journal</Link>
-          <Link to="/clinical-map" className="font-garamond text-4xl font-light text-[#1c1a16] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Clinical Map</Link>
-          <Link to="/resources" className="font-garamond text-4xl font-light text-[#811816] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Resource Center</Link>
-          <Link to="/seminars" className="font-garamond text-4xl font-light text-[#811816] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Seminars</Link>
-          <Link to="/consultations" className="font-garamond text-4xl font-light text-[#1c1a16] transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]">Consultations</Link>
+          {[
+            { path: '/', label: 'Home', isB2B: false, exact: true },
+            { path: '/shop', label: 'The Apothecary', isB2B: false },
+            { path: '/philosophy', label: 'Our Philosophy', isB2B: false },
+            { path: '/blog', label: 'Journal', isB2B: false },
+            { path: '/clinical-map', label: 'Clinical Map', isB2B: false },
+            { path: '/resources', label: 'Resource Center', isB2B: true },
+            { path: '/seminars', label: 'Seminars', isB2B: true },
+            { path: '/consultations', label: 'Consultations', isB2B: false }
+          ].map(link => {
+            const isActive = link.exact ? location.pathname === link.path : location.pathname.startsWith(link.path);
+            const baseColor = link.isB2B ? 'text-[#811816]' : 'text-[#1c1a16]';
+            return (
+              <Link 
+                key={link.path}
+                to={link.path} 
+                className={`font-garamond text-4xl font-light transition-all active:text-[#d2a356] active:drop-shadow-[0_0_8px_rgba(210,163,86,0.5)] ${
+                  isActive ? 'text-[#d2a356] drop-shadow-[0_0_8px_rgba(210,163,86,0.5)]' : baseColor
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
         
         {/* Mobile menu bottom accent */}
