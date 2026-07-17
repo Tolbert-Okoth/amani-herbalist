@@ -1,4 +1,6 @@
 const pool = require('../config/db');
+const { generateUniqueSlug } = require('../utils/slugify');
+const { deleteUploadedFile } = require('../utils/fileCleanup');
 // Fetch all products with their category names
 exports.getAllProducts = async (req, res) => {
   try {
