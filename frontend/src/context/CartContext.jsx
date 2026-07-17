@@ -149,7 +149,7 @@ export const CartProvider = ({ children }) => {
   const effectiveDiscountRate = Math.max(discountRate, globalDiscountDecimal);
   
   // Per-Item Discount Logic: custom discount overrides all others
-  const cartDiscount = cartItems.reduce((total, item) => {
+  const cartDiscount = Math.round(cartItems.reduce((total, item) => {
     let applicableRate = 0;
     // We check for '' because formData from the frontend might pass it as empty string
     if (item.custom_discount !== null && item.custom_discount !== undefined && item.custom_discount !== '') {
@@ -161,13 +161,13 @@ export const CartProvider = ({ children }) => {
     }
     
     return total + (Number(item.price_kes) * item.quantity * applicableRate);
-  }, 0);
+  }, 0));
   
   // No VAT (Removed by user request)
   const cartTax = 0;
   
-  // Final Charge
-  const cartTotal = cartSubtotal - cartDiscount;
+  // Final Charge (rounded off to prevent decimals in M-PESA requests)
+  const cartTotal = Math.round(cartSubtotal - cartDiscount);
 
   return (
     <CartContext.Provider 
