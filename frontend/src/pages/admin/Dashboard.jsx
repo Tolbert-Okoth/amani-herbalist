@@ -59,13 +59,17 @@ const AdminDashboard = () => {
       const orders = response.data?.data || response.data || [];
       if (!orders.length) { showToast('No orders to export.', 'info'); return; }
 
-      const headers = ['Order Number', 'Customer Name', 'Phone', 'Total (KES)', 'Status', 'Payment Method', 'M-Pesa Ref', 'Franchise ID', 'Date'];
+      const headers = ['Order Number', 'Customer Name', 'Phone', 'ID Number', 'Products Ordered', 'Total (KES)', 'Status', 'Delivery Method', 'Delivery Address', 'Payment Method', 'M-Pesa Ref', 'Franchise ID', 'Date'];
       const rows = orders.map(o => [
         o.order_number,
         o.customer_name || 'N/A',
-        o.customer_phone,
+        o.customer_phone || 'N/A',
+        o.customer_id_number || 'N/A',
+        o.product_names || 'N/A',
         o.total_amount,
         o.status,
+        o.delivery_method || 'N/A',
+        o.delivery_address || 'N/A',
         o.payment_method || 'N/A',
         o.mpesa_receipt || 'N/A',
         o.franchise_id || 'Retail',
