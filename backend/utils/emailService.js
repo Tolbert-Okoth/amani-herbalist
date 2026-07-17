@@ -263,10 +263,12 @@ const sendClientConsultationConfirmation = async (clientEmail, details) => {
       from: `"Fohow Eden Life" <${process.env.EMAIL_USER}>`,
       to: clientEmail,
       subject: `Confirmed: Your TCM Consultation with Fohow Eden Life`,
+      replyTo: `"Fohow Support" <${process.env.EMAIL_USER}>`,
+      text: `Hello ${details.fname},\n\nYour wholesale strategy session with Fohow Eden Life has been officially scheduled. We look forward to discussing how our TCM solutions can grow your clinic.\n\nScheduled For: ${details.confirmed_time}\nLocation: Cargen House, Nairobi (or Virtual as selected)\n\nIf you need to reschedule or have any immediate questions, please reply to this email or contact us via our official WhatsApp line.\n\n"Ancient wisdom for modern wellness."\nCargen House, Nairobi | © 2026 Fohow Eden Life`,
       html: `
         <div style="font-family: Arial, sans-serif; color: #1c1a16; max-w: 600px; margin: 0 auto; border: 1px solid #ede8df; border-radius: 12px; overflow: hidden;">
             <div style="background-color: #811816; padding: 20px; text-align: center;">
-                <h1 style="color: #f7f4ef; margin: 0;">CONSULTATION CONFIRMED</h1>
+                <h1 style="color: #f7f4ef; margin: 0;">Consultation Confirmed</h1>
             </div>
             <div style="padding: 30px;">
                 <h2 style="font-family: Georgia, serif;">Hello ${details.fname},</h2>
