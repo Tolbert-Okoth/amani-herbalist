@@ -62,12 +62,12 @@ function injectStyles(id, css) {
 }
 
 // ─── Phone validation ─────────────────────────────────────────────────────────
-const KE_PHONE_RE = /^(?:254|0)(?:7[0-9]{8}|1[01][0-9]{7})$/;
+const KE_PHONE_RE = /^(?:\+?254|0)(?:7[0-9]{8}|1[01][0-9]{7})$/;
 
 function validatePhone(raw) {
   const digits = raw.replace(/[\s\-()]/g, '');
-  if (!digits) return 'Please enter your WhatsApp number.';
-  if (!KE_PHONE_RE.test(digits)) return 'Enter a valid Kenyan number (e.g. 0712 345 678).';
+  if (!digits || digits === '+254') return 'Please enter your WhatsApp number.';
+  if (!KE_PHONE_RE.test(digits)) return 'Enter a valid Kenyan number (e.g. +254 712 345 678).';
   return null;
 }
 
@@ -143,7 +143,7 @@ function SuccessScreen({ onClose }) {
 // ─── Component ────────────────────────────────────────────────────────────────
 const ExitIntentPopup = () => {
   const [phase, setPhase]       = useState('idle'); // idle | open | closing
-  const [phone, setPhone]       = useState('');
+  const [phone, setPhone]       = useState('+254 ');
   const [error, setError]       = useState('');
   const [touched, setTouched]   = useState(false);
   const [status, setStatus]     = useState('idle'); // idle | loading | success | error

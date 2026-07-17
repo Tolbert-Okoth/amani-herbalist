@@ -3,10 +3,24 @@ const pool = require('../config/db');
  * Saves a new WhatsApp lead from the Exit-Intent Popup.
  */
 exports.createLead = async (req, res) => {
-  const { phone } = req.body;
+  let { phone } = req.body;
 
   if (!phone) {
     return res.status(400).json({ error: 'WhatsApp number is required.' });
+  }
+
+  // 🟢 Standardize phone number for WhatsApp API (Must be 254... without + or spaces)
+  phone = phone.replace(/[^0-9+]/g, ''); // keep digits and plus
+  
+  if (phone.startsWith('+254')) {
+    phone = phone.replace('+254', '254');
+  } else if (phone.startsWith('0')) {
+    phone = '254' + phone.substring(1);
+  } else if (phone.startsWith('7') || phone.startsWith('1')) {
+    phone = '254' + phone;
+  } else {
+    // Fallback: strip anything non-numeric
+    phone = phone.replace(/[^0-9]/g, '');
   }
 
   try {

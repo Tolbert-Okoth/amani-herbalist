@@ -89,7 +89,9 @@ const AdminLeads = () => {
                         <div className="w-10 h-10 rounded-full bg-[#e8f0ea] flex items-center justify-center border border-[#4a7c59]/20">
                           <Smartphone className="w-5 h-5 text-[#4a7c59]" />
                         </div>
-                        <span className="font-bold text-stone-900 text-base">{lead.phone}</span>
+                        <span className="font-bold text-stone-900 text-base">
+                          {lead.phone.startsWith('254') ? `+${lead.phone}` : lead.phone}
+                        </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-stone-600 font-medium">{lead.source || 'Exit-Intent Popup'}</td>
@@ -117,7 +119,7 @@ const AdminLeads = () => {
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <a 
-                          href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, '')}?text=Hello!%20Here%20is%20the%20Fohow%20Clinical%20Guide%20you%20requested:`} 
+                          href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, '').replace(/^0/, '254')}?text=Hello!%20Here%20is%20the%20Fohow%20Clinical%20Guide%20you%20requested:`} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="inline-flex items-center px-4 py-2 bg-[#f0ece3] text-[#1c1a16] hover:bg-[#811816] hover:text-[#f7f4ef] rounded-lg transition-colors font-medium text-xs"
