@@ -125,14 +125,21 @@ const Resources = () => {
                     let url = api.getImageUrl(doc.file_url);
                     if (!url) return '#';
                     
-                    // Cloudinary raw/image fix: Force download and assign an extension if missing
                     if (url.includes('res.cloudinary.com')) {
-                      const hasExtension = /\.[a-zA-Z0-9]{3,4}$/.test(url);
+                      const hasExtension = /\.[a-zA-Z0-9]{3,5}$/.test(url);
                       if (!hasExtension) {
-                        // Guess extension based on title, default to .ppt since that's the most common B2B resource missing it
-                        const ext = doc.title.toLowerCase().includes('pdf') ? 'pdf' : 'ppt';
+                        // File was uploaded without extension (legacy) — append it to the actual path
+                        // so Cloudinary serves the correct file bytes, not just hints the browser name
+                        const titleLower = doc.title.toLowerCase();
+                        let ext = 'ppt';
+                        if (titleLower.includes('pdf')) ext = 'pdf';
+                        else if (titleLower.includes('pptx') || titleLower.includes('presentation')) ext = 'pptx';
+                        else if (titleLower.includes('docx') || titleLower.includes('word')) ext = 'docx';
+                        else if (titleLower.includes('xlsx') || titleLower.includes('excel')) ext = 'xlsx';
+                        
                         const safeName = doc.title.replace(/[^a-zA-Z0-9]/g, '_');
-                        url = url.replace('/upload/', `/upload/fl_attachment:${safeName}.${ext}/`);
+                        // Append extension to both the fl_attachment hint AND the actual URL path
+                        url = url.replace('/upload/', `/upload/fl_attachment:${safeName}.${ext}/`) + `.${ext}`;
                       } else {
                         url = url.replace('/upload/', `/upload/fl_attachment/`);
                       }
