@@ -12,7 +12,9 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'amani_herbalists',
-    resource_type: 'auto'
+    resource_type: 'auto',
+    use_filename: true,
+    unique_filename: true
   }
 });
 

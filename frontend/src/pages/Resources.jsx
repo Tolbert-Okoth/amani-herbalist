@@ -121,7 +121,24 @@ const Resources = () => {
                 </div>
                 
                 <a 
-                  href={api.getImageUrl(doc.file_url)} 
+                  href={(() => {
+                    let url = api.getImageUrl(doc.file_url);
+                    if (!url) return '#';
+                    
+                    // Cloudinary raw/image fix: Force download and assign an extension if missing
+                    if (url.includes('res.cloudinary.com')) {
+                      const hasExtension = /\.[a-zA-Z0-9]{3,4}$/.test(url);
+                      if (!hasExtension) {
+                        // Guess extension based on title, default to .ppt since that's the most common B2B resource missing it
+                        const ext = doc.title.toLowerCase().includes('pdf') ? 'pdf' : 'ppt';
+                        const safeName = doc.title.replace(/[^a-zA-Z0-9]/g, '_');
+                        url = url.replace('/upload/', `/upload/fl_attachment:${safeName}.${ext}/`);
+                      } else {
+                        url = url.replace('/upload/', `/upload/fl_attachment/`);
+                      }
+                    }
+                    return url;
+                  })()} 
                   target="_blank" 
                   rel="noreferrer"
                   className="flex items-center justify-center w-full py-3.5 px-4 bg-stone-50 text-[#1a0504] font-bold text-sm rounded-xl hover:bg-[#811816] hover:text-[#f7f4ef] hover:shadow-lg transition-all duration-300 gap-2 border border-stone-200 hover:border-transparent group/btn"
