@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Brain, Wind, ActivitySquare, Footprints, ArrowRight, Activity, CheckCircle2, Pill } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 // PHASE 7: Upgraded with Live Catalog Data Mapping
 const BODY_ZONES = [
@@ -79,6 +80,11 @@ const MeridianMap = () => {
 
   return (
     <div className="min-h-screen bg-[#1a0504] font-dm relative pt-24 pb-20 overflow-hidden">
+      <SEO 
+        title="Interactive Clinical Map | Fohow Eden Life"
+        description="Explore the TCM Meridian network to find targeted Fohow supplements for specific organ systems and ailments."
+        path="/clinical-map"
+      />
       
       {/* Deep Maroon Background Ambience */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#4a0e0d_0%,#1a0504_100%)] opacity-60 pointer-events-none" />

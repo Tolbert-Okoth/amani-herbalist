@@ -8,12 +8,13 @@ Allow: /philosophy
 Allow: /blog
 Allow: /clinical-map
 Allow: /consultations
+Allow: /resources
+Allow: /seminars
 
 # Block sensitive administrative and internal paths
-Disallow: /admin
-Disallow: /login
+Disallow: /eden-secure-portal-hq
 Disallow: /checkout
 Disallow: /api/
 
-# Sitemap (Add your production domain here when ready)
+# Sitemap
 Sitemap: https://fohowedenlife.co.ke/sitemap.xml

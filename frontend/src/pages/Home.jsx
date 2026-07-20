@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShieldCheck, Smartphone, Truck, Plus, ArrowRight, Star, Leaf, FlameKindling, Sun, Sprout, Quote, FileText, Users, Calendar, MapPin } from 'lucide-react';
 import api from '../api';
 import BioVitalityQuiz from '../components/BioVitalityQuiz';
+import SEO from '../components/SEO';
 
 /* ─── tiny hook: triggers once element enters viewport ─── */
 const useInView = (threshold = 0.15) => {
@@ -142,6 +143,11 @@ const Home = () => {
 
   return (
     <div className="font-garamond bg-[#f7f4ef] text-[#1c1a16] overflow-x-hidden">
+      <SEO 
+        title="Fohow Eden Life | TCM Wholesale & Healthcare Portal Kenya"
+        description="Premium Traditional Chinese Medicine supplements for wholesale and clinical use in Kenya."
+        path="/"
+      />
 
       {/* ════════ 1. HERO ════════ */}
       <section ref={heroRef} className="relative flex flex-col justify-center min-h-[85svh] px-6 pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden">

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, MapPin, X, Loader2, CheckCircle2, Users, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../api';
+import SEO from '../components/SEO';
 
 const Seminars = () => {
   const [events, setEvents] = useState([]);
@@ -76,6 +77,11 @@ const Seminars = () => {
 
   return (
     <div className="bg-[#fcfbf9] min-h-screen py-16 font-dm">
+      <SEO 
+        title="Regional Seminars & Training | Fohow Eden Life"
+        description="Join our upcoming TCM product training, business strategy seminars, and certification events across Kenya."
+        path="/seminars"
+      />
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16">

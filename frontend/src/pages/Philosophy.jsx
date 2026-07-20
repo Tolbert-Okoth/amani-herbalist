@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 import api from '../api';
 import { Leaf, Droplets, Sun, ArrowRight, Wind, FlameKindling, Shield, Sprout } from 'lucide-react';
@@ -99,6 +100,11 @@ const Philosophy = () => {
 
   return (
     <div className="font-garamond bg-[#f7f4ef] text-[#1c1a16] min-h-[100svh] overflow-x-hidden">
+      <SEO 
+        title="Our Philosophy — Ancient Wisdom for Modern Wellness"
+        description="Discover the Five Element theory and Traditional Chinese Medicine principles behind Fohow Eden Life."
+        path="/philosophy"
+      />
 
       {/* ══════════════════════════════════
           1. HERO

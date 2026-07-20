@@ -4,6 +4,7 @@ import api from '../api';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
 import { useCart } from '../context/CartContext';
+import SEO from '../components/SEO';
 
 /* ── robust fade-up hook ── */
 const useInView = (threshold = 0.08) => {
@@ -180,6 +181,11 @@ const Shop = () => {
   return (
     // REMOVED: overflow-x-hidden to prevent flexbox clipping
     <div className="font-garamond bg-[#f7f4ef] text-[#1c1a16] min-h-[100svh]">
+      <SEO 
+        title="The Apothecary — Shop TCM Supplements"
+        description="Browse and order premium Fohow TCM supplements, herbal formulas, and wellness products."
+        path="/shop"
+      />
 
       {/* ══════════════════════════════════
           HEADER

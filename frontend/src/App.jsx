@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import PromoPopup from './components/PromoPopup';
 import Footer from './components/Footer'; // <-- 1. Import Footer
@@ -54,6 +55,7 @@ const PublicLayout = () => {
 
 const App = () => {
   return (
+    <HelmetProvider>
     <Router>
       <ToastProvider>
         <SettingsProvider>
@@ -105,6 +107,7 @@ const App = () => {
       </SettingsProvider>
       </ToastProvider>
     </Router>
+    </HelmetProvider>
   );
 }
 

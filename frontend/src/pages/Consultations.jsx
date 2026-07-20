@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar, ArrowRight, Phone, Clock, Star, MapPin, CheckCircle2, Building, Navigation, ShieldCheck } from 'lucide-react';
 import api from '../api';
-
+import SEO from '../components/SEO';
 /* ── robust fade-up hook ── */
 const useInView = (threshold = 0.1) => {
   const [visible, setVisible] = useState(false);
@@ -63,6 +63,11 @@ const Consultations = () => {
 
   return (
     <div className="font-garamond bg-[#f7f4ef] text-[#1c1a16] min-h-[100svh] overflow-x-hidden">
+      <SEO 
+        title="Book a Free Consultation | Fohow Eden Life"
+        description="Book a free consultation at our Cargen House headquarters. Let our experts formulate a customized TCM wellness plan for you or your business."
+        path="/consultations"
+      />
 
       {/* ══════════════════════════════
           HERO

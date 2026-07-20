@@ -6,7 +6,7 @@ import api from '../api';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
 import DOMPurify from 'dompurify';
-
+import SEO from '../components/SEO';
 
 /* ── updated fade-up hook that handles loading states ── */
 const useInView = (threshold = 0.12) => {
@@ -130,6 +130,28 @@ const ProductDetail = () => {
 
   return (
     <div className="font-garamond bg-[#f7f4ef] text-[#1c1a16] min-h-[100svh] overflow-x-hidden pt-20">
+      <SEO 
+        title={product.name}
+        description={product.excerpt || `Buy ${product.name} wholesale from Fohow Eden Life.`}
+        path={`/product/${product.id}`}
+        image={api.getImageUrl(product.image_url)}
+        type="product"
+        jsonLd={{
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": product.name,
+          "image": api.getImageUrl(product.image_url),
+          "description": product.excerpt || `Buy ${product.name} wholesale.`,
+          "sku": `FOHOW-${product.id}`,
+          "offers": {
+            "@type": "Offer",
+            "url": `${window.location.origin}/product/${product.id}`,
+            "priceCurrency": "KES",
+            "price": memberPrice,
+            "availability": product.stock_quantity > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+          }
+        }}
+      />
 
       {/* ── back link ── */}
       <div className="max-w-7xl mx-auto px-6 pt-8 pb-4">

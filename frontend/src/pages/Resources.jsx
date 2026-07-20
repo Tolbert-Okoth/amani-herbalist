@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FileText, Download, Loader2, ArrowDownToLine, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../api';
+import SEO from '../components/SEO';
 
 const Resources = () => {
   const [documents, setDocuments] = useState([]);
@@ -36,6 +37,11 @@ const Resources = () => {
 
   return (
     <div className="bg-[#fcfbf9] min-h-screen pb-24 font-dm">
+      <SEO 
+        title="Resource Center | Fohow Eden Life"
+        description="Download clinical guides, product brochures, and marketing materials for Fohow TCM supplements."
+        path="/resources"
+      />
       
       {/* ═════════ PREMIUM HERO SECTION ═════════ */}
       <div className="relative bg-[#1a0504] pt-28 pb-20 px-6 overflow-hidden">

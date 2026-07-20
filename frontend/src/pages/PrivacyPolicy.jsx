@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { ShieldCheck, Lock, Database } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const PrivacyPolicy = () => {
   // Ensure the page loads at the top
@@ -11,6 +12,11 @@ const PrivacyPolicy = () => {
 
   return (
     <div className="font-garamond bg-[#f7f4ef] text-[#1c1a16] min-h-screen pt-24 pb-20">
+      <SEO 
+        title="Privacy Policy | Fohow Eden Life Kenya"
+        description="Learn how Fohow Eden Life collects, uses, and protects your personal data in accordance with the Kenya Data Protection Act, 2019."
+        path="/privacy"
+      />
       
       {/* ════════ HEADER ════════ */}
       <div className="bg-[#1a0504] py-16 px-6 text-center border-b-[4px] border-[#811816]">

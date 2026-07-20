@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, User, ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
 import api from '../api';
 import DOMPurify from 'dompurify';
+import SEO from '../components/SEO';
 
 /* ── robust fade-up hook ── */
 const useInView = (threshold = 0.08) => {
@@ -54,6 +55,13 @@ const Blog = () => {
   if (activeArticle) {
     return (
       <div className="font-garamond min-h-screen bg-[#f7f4ef] pt-24 pb-24 px-6 animate-in fade-in duration-500">
+        <SEO 
+          title={activeArticle.title}
+          description={activeArticle.content.substring(0, 160).replace(/(<([^>]+)>)/gi, "")}
+          path={`/blog?article=${activeArticle.id}`}
+          type="article"
+          image={activeArticle.image_url ? api.getImageUrl(activeArticle.image_url) : undefined}
+        />
         <div className="max-w-3xl mx-auto">
 
           <button
@@ -110,6 +118,11 @@ const Blog = () => {
   // ══════════════════════════════════
   return (
     <div className="font-garamond bg-[#f7f4ef] text-[#1c1a16] min-h-[100svh] overflow-x-hidden">
+      <SEO 
+        title="The TCM Journal | Fohow Eden Life Blog"
+        description="Clinical insights, seasonal prescribing guides, and TCM knowledge for health practitioners and Fohow distributors in Kenya."
+        path="/blog"
+      />
 
       {/* Header */}
       <section ref={headerRef} className="px-6 pt-24 pb-12 md:pt-32 md:pb-16 text-center max-w-4xl mx-auto">
