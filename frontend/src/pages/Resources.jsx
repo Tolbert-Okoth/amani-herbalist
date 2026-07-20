@@ -121,33 +121,7 @@ const Resources = () => {
                 </div>
                 
                 <a 
-                  href={(() => {
-                    let url = api.getImageUrl(doc.file_url);
-                    if (!url) return '#';
-                    
-                    if (url.includes('res.cloudinary.com')) {
-                      const hasExtension = /\.[a-zA-Z0-9]{3,5}$/.test(url);
-                      if (!hasExtension) {
-                        // File was uploaded without extension (legacy) — append it to the actual path
-                        // so Cloudinary serves the correct file bytes, not just hints the browser name
-                        const titleLower = doc.title.toLowerCase();
-                        let ext = 'ppt';
-                        if (titleLower.includes('pdf')) ext = 'pdf';
-                        else if (titleLower.includes('pptx') || titleLower.includes('presentation')) ext = 'pptx';
-                        else if (titleLower.includes('docx') || titleLower.includes('word')) ext = 'docx';
-                        else if (titleLower.includes('xlsx') || titleLower.includes('excel')) ext = 'xlsx';
-                        
-                        const safeName = doc.title.replace(/[^a-zA-Z0-9]/g, '_');
-                        // Append extension to both the fl_attachment hint AND the actual URL path
-                        url = url.replace('/upload/', `/upload/fl_attachment:${safeName}.${ext}/`) + `.${ext}`;
-                      } else {
-                        url = url.replace('/upload/', `/upload/fl_attachment/`);
-                      }
-                    }
-                    return url;
-                  })()} 
-                  target="_blank" 
-                  rel="noreferrer"
+                  href={`${import.meta.env.VITE_API_URL || 'http://localhost:5001/api'}/documents/${doc.id}/download`}
                   className="flex items-center justify-center w-full py-3.5 px-4 bg-stone-50 text-[#1a0504] font-bold text-sm rounded-xl hover:bg-[#811816] hover:text-[#f7f4ef] hover:shadow-lg transition-all duration-300 gap-2 border border-stone-200 hover:border-transparent group/btn"
                 >
                   <Download size={18} className="text-stone-400 group-hover/btn:text-[#d2a356] transition-colors" /> 

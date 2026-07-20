@@ -95,3 +95,66 @@ exports.deleteDocument = async (req, res) => {
     res.status(500).json({ success: false, error: 'Server error deleting document' });
   }
 };
+
+// --- DOWNLOAD PROXY (streams from Cloudinary with proper headers) ---
+exports.downloadDocument = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const docResult = await pool.query('SELECT * FROM documents WHERE id = $1', [id]);
+    
+    if (docResult.rowCount === 0) {
+      return res.status(404).json({ success: false, error: 'Document not found' });
+    }
+    
+    const doc = docResult.rows[0];
+    let fileUrl = doc.file_url;
+    if (!fileUrl) {
+      return res.status(404).json({ success: false, error: 'No file attached to this document' });
+    }
+    
+    // Make sure it's a full URL
+    if (!fileUrl.startsWith('http')) {
+      fileUrl = `${req.protocol}://${req.get('host')}${fileUrl}`;
+    }
+    
+    // Determine file extension and MIME type
+    const path = require('path');
+    const urlPath = new URL(fileUrl).pathname;
+    let ext = path.extname(urlPath).toLowerCase() || '.ppt';
+    
+    const mimeMap = {
+      '.pdf': 'application/pdf',
+      '.ppt': 'application/vnd.ms-powerpoint',
+      '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      '.doc': 'application/msword',
+      '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      '.xls': 'application/vnd.ms-excel',
+      '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      '.jpg': 'image/jpeg',
+      '.png': 'image/png',
+    };
+    
+    const contentType = mimeMap[ext] || 'application/octet-stream';
+    const safeName = doc.title.replace(/[^a-zA-Z0-9_\- ]/g, '').trim().replace(/\s+/g, '_');
+    const filename = `${safeName}${ext}`;
+    
+    // Fetch the file from Cloudinary
+    const response = await fetch(fileUrl);
+    if (!response.ok) {
+      console.error(`[Download Proxy] Cloudinary responded ${response.status} for ${fileUrl}`);
+      return res.status(502).json({ success: false, error: 'Failed to fetch file from storage' });
+    }
+    
+    // Stream it to the client as a proper download
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    
+    const { Readable } = require('stream');
+    const nodeStream = Readable.fromWeb(response.body);
+    nodeStream.pipe(res);
+    
+  } catch (err) {
+    console.error('Error proxying document download:', err.message);
+    res.status(500).json({ success: false, error: 'Server error downloading document' });
+  }
+};

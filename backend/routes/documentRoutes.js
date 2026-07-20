@@ -6,6 +6,7 @@ const { adminAuth } = require('../middleware/adminAuth');
 
 // --- Public Routes ---
 router.get('/', documentController.getAllDocuments);
+router.get('/:id/download', documentController.downloadDocument);
 
 // --- Admin (Protected) Routes ---
 router.post('/', adminAuth, documentUpload.single('file'), documentController.createDocument);
